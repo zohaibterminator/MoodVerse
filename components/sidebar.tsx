@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Dancing_Script} from "next/font/google";
+import { Dancing_Script } from "next/font/google";
 import { cn } from "@/lib/utils";
 
 const dancing_script = Dancing_Script({
-    weight:"700", 
-    subsets:["latin"]
+  weight: "700",
+  subsets: ["latin"],
 });
 const Sidebar = () => {
   return (
@@ -16,7 +16,9 @@ const Sidebar = () => {
           <div className="relative w-10 h-10 mr-4">
             <Image fill alt="Logo" src="/loho2.jpg" />
           </div>
-          <h1 className={cn("text-3xl font-bold",dancing_script.className)}>MoodVerse</h1>
+          <h1 className={cn("text-3xl font-bold", dancing_script.className)}>
+            MoodVerse
+          </h1>
         </Link>
       </div>
     </div>
