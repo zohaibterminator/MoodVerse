@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { LayoutDashboard, BookOpenText, SmilePlus,Lightbulb } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const dancing_script = Dancing_Script({
   weight: "700",
@@ -38,8 +39,9 @@ const routes =[
 ];
 
 const Sidebar = () => {
+  const pathname = usePathname();
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-yellow-300 text-purple-600">
+    <div className="space-y-4 py-4 flex flex-col h-full bg-gradient-to-r from-yellow-100 to-purple-100 text-purple-700">
       <div className="px-3 py-2 flex-1">
         <Link href="/dashboard" className="flex items-center pl-3 mb-14">
           <div className="relative w-10 h-10 mr-4">
@@ -54,7 +56,8 @@ const Sidebar = () => {
                 <Link 
                 href={route.href}
                 key={route.href}
-                className="text-sm group flex p-3 w-full jusitfy start font-medium cursor-pointer hover:bg-white/50 rounded-lg transition"
+                className={cn("text-sm group flex p-3 w-full jusitfy start font-medium cursor-pointer hover:bg-white/50 rounded-lg transition", pathname===route.href? "bg-white/40 ":"text-purple-500"
+                )}
                 >
                 <div className="flex items-center flex-1">
                     <route.icon className={cn("h-5 w-5 mr-3",route.color)} />
