@@ -3,14 +3,43 @@ import Image from "next/image";
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { LayoutDashboard, BookOpenText, SmilePlus,Lightbulb } from "lucide-react";
 
 const dancing_script = Dancing_Script({
   weight: "700",
   subsets: ["latin"],
 });
+
+const routes =[
+    {
+        label: "Dashboard",
+        icon: LayoutDashboard,
+        href: "/dashboard",
+        color : "text-sky-600",
+    },
+    {
+        label: "Journal",
+        icon: BookOpenText,
+        href: "/journal",
+        color : "text-green-600",
+    },
+    {
+        label: "Mood",
+        icon: SmilePlus,
+        href: "/mood",
+        color : "text-pink-500",
+    },
+    {
+        label: "Recommendation",
+        icon: Lightbulb,
+        href: "/recommendation",
+        color : "text-red-500",
+    }
+];
+
 const Sidebar = () => {
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full  text-orange-500">
+    <div className="space-y-4 py-4 flex flex-col h-full bg-yellow-300 text-purple-600">
       <div className="px-3 py-2 flex-1">
         <Link href="/dashboard" className="flex items-center pl-3 mb-14">
           <div className="relative w-10 h-10 mr-4">
@@ -18,8 +47,22 @@ const Sidebar = () => {
           </div>
           <h1 className={cn("text-3xl font-bold", dancing_script.className)}>
             MoodVerse
-          </h1>
+          </h1> 
         </Link>
+        <div className="space-y-1">
+            {routes.map((route)=>(
+                <Link 
+                href={route.href}
+                key={route.href}
+                className="text-sm group flex p-3 w-full jusitfy start font-medium cursor-pointer hover:bg-white/50 rounded-lg transition"
+                >
+                <div className="flex items-center flex-1">
+                    <route.icon className={cn("h-5 w-5 mr-3",route.color)} />
+                    {route.label}
+                </div>
+                </Link>
+            ))}
+        </div>
       </div>
     </div>
   );
