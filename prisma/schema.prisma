@@ -1,0 +1,77 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User_Profile {
+  id              String            @id @default(uuid())
+  userId          String
+  first_name      String?           @db.Text
+  last_name       String?           @db.Text
+  email           String?           @db.Text
+  date_of_birth   DateTime?
+  profession      String?           @db.Text
+  gender          String?           @db.Text
+  phone_num       Int?              @db.Int
+  journal_entries Journal_Entries[]
+  mood_tracking   Mood_Tracking[]
+}
+
+model Journal_Entries {
+  id           String                 @id @default(uuid())
+  user_id      String
+  time         DateTime               @default(now())
+  journal_text String                 @db.Text
+  user         User_Profile           @relation(fields: [user_id], references: [id])
+  analysis     AI_Sentiment_Analysis?
+
+  @@index([user_id])
+}
+
+model Mood_Tracking {
+  id        String                 @id @default(uuid())
+  user_id   String
+  time      DateTime               @default(now())
+  mood      String                 @db.Text
+  Note      String?                @db.Text
+  intensity Int                    @db.Int
+  location  String?                @db.Text
+  weather   String?                @db.Text
+  user      User_Profile           @relation(fields: [user_id], references: [id])
+  analysis  AI_Sentiment_Analysis?
+
+  @@index([user_id])
+}
+
+model AI_Sentiment_Analysis {
+  id             String          @id @default(uuid())
+  entry_id       String          @unique
+  mood_id        String          @unique
+  analysis       String
+  time           DateTime        @default(now())
+  entry          Journal_Entries @relation(fields: [entry_id], references: [id])
+  mood           Mood_Tracking   @relation(fields: [mood_id], references: [id])
+  recommendation Recommendation?
+}
+
+model Recommendation {
+  id              String                @id @default(uuid())
+  analysis_id     String                @unique
+  recommendations String
+  time            DateTime              @default(now())
+  rating          Rating?
+  analysis        AI_Sentiment_Analysis @relation(fields: [analysis_id], references: [id])
+}
+
+model Rating {
+  id                String         @id @default(uuid())
+  recommendation_id String         @unique
+  rating            Int            @db.Int
+  time              DateTime       @default(now())
+  recommendation    Recommendation @relation(fields: [recommendation_id], references: [id])
+}
