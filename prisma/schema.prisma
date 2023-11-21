@@ -24,28 +24,28 @@ model User_Profile {
 
 model Journal_Entries {
   id           String                 @id @default(uuid())
-  user_id      String
+  userId      String
   time         DateTime               @default(now())
   journal_text String                 @db.Text
-  user         User_Profile           @relation(fields: [user_id], references: [id])
+  user         User_Profile           @relation(fields: [userId], references: [id])
   analysis     AI_Sentiment_Analysis?
 
-  @@index([user_id])
+  @@index([userId])
 }
 
 model Mood_Tracking {
   id        String                 @id @default(uuid())
-  user_id   String
+  userId   String
   time      DateTime               @default(now())
   mood      String                 @db.Text
   Note      String?                @db.Text
   intensity Int                    @db.Int
   location  String?                @db.Text
   weather   String?                @db.Text
-  user      User_Profile           @relation(fields: [user_id], references: [id])
+  user      User_Profile           @relation(fields: [userId], references: [id])
   analysis  AI_Sentiment_Analysis?
 
-  @@index([user_id])
+  @@index([userId])
 }
 
 model AI_Sentiment_Analysis {
