@@ -42,10 +42,13 @@ const JournalPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+        console.log("in page try");
       const response = await axios.post("/api/journal", values);
+      console.log("in page try 2");
       router.push(`/journal/${response.data.id}`);
       toast.success("Success");
     } catch {
+        console.log("in page catch");
       toast.error("something went wrong");
     }
   };

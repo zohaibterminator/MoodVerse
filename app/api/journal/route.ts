@@ -6,6 +6,7 @@ export async function POST (
     req:Request,
 ){
     try{
+        console.log("bjebiw");
         const { userId }=auth();
         const { journal_text } = await req.json();
 
@@ -22,6 +23,8 @@ export async function POST (
         return NextResponse.json(Journal_Entries);
     }
     catch (error){
+        const { userId }=auth();
+        console.log(userId);
         console.log("[JOURNAL]",error);
         return new NextResponse("Internal Error", {status:500});
     }
