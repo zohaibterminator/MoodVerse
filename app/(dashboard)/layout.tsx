@@ -13,7 +13,7 @@ const DashboardLayout =({
                 <Sidebar />
             </div>
             </div>
-            <main className="md:pl-72">
+            <main className="md:pl-72 bg-gradient-to-r from-purple-100 to-purple-200">
                 <Navbar />
                 {children}
             </main>
