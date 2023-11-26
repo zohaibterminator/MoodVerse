@@ -39,18 +39,6 @@ function Mood() {
     neutral: 1,
   };
 
-  // Calculate total days
-  const totalDays = Object.values(moodData).reduce(
-    (acc, count) => acc + count,
-    0
-  );
-
-  // Calculate percentages
-  const happyPercentage = (moodData.happy / totalDays) * 100;
-  const sadPercentage = (moodData.sad / totalDays) * 100;
-  const excitedPercentage = (moodData.excited / totalDays) * 100;
-  const neutralPercentage = (moodData.neutral / totalDays) * 100;
-
   // Data for the bar chart
   const doughnutData = {
     labels: ["Happy", "Sad", "Excited", "Neutral"],
