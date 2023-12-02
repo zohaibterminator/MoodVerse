@@ -65,8 +65,13 @@ function Mood() {
           <span className="mr-1">Hey,</span>
           <span className="font-bold">Alexa!👋</span>
         </div>
+        <div className="flex justify-end">
+        <button className="text-white text-lg font-medium bg-purple-900 p-4 mr-3 rounded-full shadow-md">
+          Add Mood +
+        </button>
         <div className="text-purple-900 text-lg font-medium bg-gray-100 p-4 rounded-full shadow-md">
           {formattedDate}
+        </div>
         </div>
       </div>
       <div className="flex justify-between mt-7 mx-2">

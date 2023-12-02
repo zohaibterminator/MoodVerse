@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, BookOpenText, SmilePlus, Lightbulb } from "lucide-react";
+import { ArrowRight, BookOpenText, SmilePlus, Lightbulb,} from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,13 @@ const tools = [
     label: "Recommendation",
     icon: Lightbulb,
     href: "/recommendation",
+    color: "text-red-500",
+    //bgColor : "bg-red-500/10",
+  },
+  {
+    label: "Profile",
+    icon: Lightbulb,
+    href: "/profile",
     color: "text-red-500",
     //bgColor : "bg-red-500/10",
   },
