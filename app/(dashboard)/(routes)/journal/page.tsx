@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { json } from "stream/consumers";
 
 const formSchema = z.object({
   entry: z.string().min(1, {
@@ -43,7 +44,11 @@ const JournalPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
         console.log("in page try");
-      const response = await axios.post("/api/journal", values);
+        console.log(values);
+        const jsonValues = JSON.stringify(values);
+        console.log(jsonValues);
+        // Make the axios POST request with JSON values
+        const response = await axios.post("/api/journal", jsonValues);
       console.log("in page try 2");
       router.push(`/journal/${response.data.id}`);
       toast.success("Success");

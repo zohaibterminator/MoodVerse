@@ -1,11 +1,13 @@
-datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User_Profile {
@@ -17,7 +19,7 @@ model User_Profile {
   date_of_birth   DateTime?
   profession      String?           @db.Text
   gender          String?           @db.Text
-  phone_num       Int?              @db.Int
+  phone_num       Int?              
   journal_entries Journal_Entries[]
   mood_tracking   Mood_Tracking[]
 }
@@ -39,7 +41,7 @@ model Mood_Tracking {
   time      DateTime               @default(now())
   mood      String                 @db.Text
   Note      String?                @db.Text
-  intensity Int                    @db.Int
+  intensity Int                    
   location  String?                @db.Text
   weather   String?                @db.Text
   user      User_Profile           @relation(fields: [userId], references: [id])
@@ -71,7 +73,7 @@ model Recommendation {
 model Rating {
   id                String         @id @default(uuid())
   recommendation_id String         @unique
-  rating            Int            @db.Int
+  rating            Int            
   time              DateTime       @default(now())
-  recommendation    Recommendation @relation(fields: [recommendation_id], references: [id])
+  recommendation    Recommendation @relation(fields: [recommendation_id], references: [id])
 }

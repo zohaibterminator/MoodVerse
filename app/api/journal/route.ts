@@ -5,8 +5,9 @@ import { NextResponse } from "next/server";
 export async function POST (
     req:Request,
 ){
+    console.log("bjebiw");
     try{
-        console.log("bjebiw");
+        
         const { userId }=auth();
         const { journal_text } = await req.json();
 
