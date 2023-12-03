@@ -11,15 +11,14 @@ datasource db {
 }
 
 model User_Profile {
-  id              String            @id @default(uuid())
-  userId          String
+  id              String            @id
   first_name      String?           @db.Text
   last_name       String?           @db.Text
   email           String?           @db.Text
-  date_of_birth   DateTime?
+  date_of_birth   Int?
   profession      String?           @db.Text
   gender          String?           @db.Text
-  phone_num       Int?              
+  phone_num       String?              
   journal_entries Journal_Entries[]
   mood_tracking   Mood_Tracking[]
 }
@@ -75,5 +74,5 @@ model Rating {
   recommendation_id String         @unique
   rating            Int            
   time              DateTime       @default(now())
-  recommendation    Recommendation @relation(fields: [recommendation_id], references: [id])
+  recommendation    Recommendation @relation(fields: [recommendation_id], references: [id])
 }
