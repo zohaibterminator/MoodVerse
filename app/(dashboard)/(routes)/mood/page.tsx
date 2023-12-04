@@ -2,6 +2,7 @@
 import * as React from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import { useRouter } from "next/navigation"
 Chart.register(...registerables);
 function Mood() {
   // Get current date
@@ -56,7 +57,7 @@ function Mood() {
       },
     ],
   };
-
+  const router = useRouter();
   return (
     <div className="text-center mt-5 mx-10">
       {/* Existing content */}
@@ -66,7 +67,7 @@ function Mood() {
           <span className="font-bold">Alexa!👋</span>
         </div>
         <div className="flex justify-end">
-        <button className="text-white text-lg font-medium bg-purple-900 p-4 mr-3 rounded-full shadow-md">
+        <button className="text-white text-lg font-medium bg-purple-900 p-4 mr-3 rounded-full shadow-md" onClick={() => router.push(`/mood/addmood`)}>
           Add Mood +
         </button>
         <div className="text-purple-900 text-lg font-medium bg-gray-100 p-4 rounded-full shadow-md">

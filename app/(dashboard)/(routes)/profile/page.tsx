@@ -29,14 +29,14 @@ const formSchema = z.object({
     email: z.string().min(0, {
         message: "Email",
       }),
-      date_of_birth: z.number(),
+      date_of_birth:  z.coerce.number(),
       profession:z.string().min(0, {
         message: "Enter your profession",
       }),
       gender:z.string().min(0, {
         message: "Enter your Gender",
       }),
-      phone_num:z.number(),
+      phone_num:z.string(),
   });
 
 function Profile() {
@@ -49,14 +49,11 @@ function Profile() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-        console.log("in page try");
-        console.log(values);
         const response = await axios.post("/api/profile", values);
-      console.log("in page try 2");
-      router.push(`/profile/${response.data.id}`);
+      router.push(`/profile`);
       toast.success("Success");
     } catch {
-        console.log("in page catch");
+       
       toast.error("something went wrong");
     }
   };
@@ -181,7 +178,6 @@ function Profile() {
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
                   <Input
-                  type="number"
                       disabled={isSubmitting}
                       placeholder="enter your Phone"
                       {...field}
