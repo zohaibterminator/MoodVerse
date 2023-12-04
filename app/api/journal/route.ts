@@ -30,3 +30,13 @@ export async function POST (
         return new NextResponse("Internal Error", {status:500});
     }
 }
+
+export async function GET() {
+    try{
+        const journal_text=await db.journal_Entries.findMany();
+        return NextResponse.json(journal_text);
+    }
+    catch{
+        console.log("eroor");
+    }
+}
