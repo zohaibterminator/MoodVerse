@@ -141,7 +141,9 @@ function Profile() {
               )}
             />
             <div>
-              <Button type="submit">Continue</Button>
+              <Button type="submit" disabled={!isValid || isSubmitting}>
+                Continue
+              </Button>
             </div>
           </form>
         </Form>

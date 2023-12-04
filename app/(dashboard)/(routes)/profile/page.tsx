@@ -45,7 +45,7 @@ function Profile() {
     resolver: zodResolver(formSchema)
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -75,7 +75,7 @@ function Profile() {
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                       
                       placeholder="John"
                       {...field}
                     />
@@ -92,7 +92,7 @@ function Profile() {
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                       
                       placeholder="Doe"
                       {...field}
                     />
@@ -109,7 +109,7 @@ function Profile() {
                   <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isSubmitting}
+                       
                       placeholder="Johndoe@gmail.com"
                       {...field}
                     />
@@ -127,7 +127,7 @@ function Profile() {
                   <FormControl>
                   <Input
                   type="number"
-                      disabled={isSubmitting}
+                       
                       placeholder="enter your age"
                       {...field}
                     />
@@ -144,7 +144,7 @@ function Profile() {
                   <FormLabel>Profession</FormLabel>
                   <FormControl>
                   <Input
-                      disabled={isSubmitting}
+                       
                       placeholder="enter your profession"
                       {...field}
                     />
@@ -161,7 +161,7 @@ function Profile() {
                   <FormLabel>Gender</FormLabel>
                   <FormControl>
                   <Input
-                      disabled={isSubmitting}
+                       
                       placeholder="enter your gender"
                       {...field}
                     />
@@ -178,7 +178,7 @@ function Profile() {
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
                   <Input
-                      disabled={isSubmitting}
+                       
                       placeholder="enter your Phone"
                       {...field}
                     />
