@@ -1,9 +1,16 @@
 "use client";
-import { ArrowRight, BookOpenText, SmilePlus, Lightbulb,} from 'lucide-react';
+import { ArrowRight, BookOpenText, SmilePlus, Lightbulb,User,Activity} from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 const tools = [
+  {
+    label: "Profile",
+    icon: User,
+    href: "/profile",
+    color: "text-red-500",
+    //bgColor : "bg-red-500/10",
+  },
   {
     label: "Journal",
     icon: BookOpenText,
@@ -19,17 +26,16 @@ const tools = [
     //bgColor : "bg-pink-500/10",
   },
   {
+    label: "Analysis",
+    icon: Activity,
+    href: "/analysis",
+    color : "text-cyan-500",
+},
+  {
     label: "Recommendation",
     icon: Lightbulb,
     href: "/recommendation",
-    color: "text-red-500",
-    //bgColor : "bg-red-500/10",
-  },
-  {
-    label: "Profile",
-    icon: Lightbulb,
-    href: "/profile",
-    color: "text-red-500",
+    color: "text-lime-500",
     //bgColor : "bg-red-500/10",
   },
 ];

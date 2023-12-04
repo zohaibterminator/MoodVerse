@@ -50,7 +50,7 @@ const JournalPage = () => {
         // Make the axios POST request with JSON values
         const response = await axios.post("/api/journal", jsonValues);
       console.log("in page try 2");
-      router.push(`/journal/${response.data.id}`);
+      router.push(`/journal`);
       toast.success("Success");
     } catch {
         console.log("in page catch");
