@@ -24,8 +24,8 @@ import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { json } from "stream/consumers";
 
 const formSchema = z.object({
-  entry: z.string().min(1, {
-    message: "Journal Entry is required",
+  journal_text: z.string().min(1, {
+    message: "Journal journal_text is required",
   }),
 });
 
@@ -34,7 +34,7 @@ const JournalPage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      entry: "",
+      journal_text: "",
     },
   });
 
@@ -70,10 +70,10 @@ const JournalPage = () => {
           >
             <FormField
               control={form.control}
-              name="entry"
+              name="journal_text"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Journal Entry</FormLabel>
+                  <FormLabel>Journal journal_text</FormLabel>
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
