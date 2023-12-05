@@ -63,6 +63,7 @@ function JournalPage(){
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
         const response = await axios.post("/api/journal", values);
+        setJournalEntries((prevEntries) => [response.data, ...prevEntries]);
       router.push(`/journal`);
       toast.success("Success");
     } catch {

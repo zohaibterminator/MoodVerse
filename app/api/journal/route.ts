@@ -33,7 +33,18 @@ export async function POST (
 
 export async function GET() {
     try{
-        const journal_text=await db.journal_Entries.findMany();
+        const { userId }=auth();
+        if(!userId){
+            return new NextResponse("Unauthorized",{status:401});
+        }
+        const journal_text=await db.journal_Entries.findMany({
+            where:{
+                userId:userId
+            },
+            orderBy: {
+                time: 'desc',
+              },
+        });
         return NextResponse.json(journal_text);
     }
     catch{
