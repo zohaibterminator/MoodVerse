@@ -29,3 +29,24 @@ export async function POST (
         return new NextResponse("Internal Error", {status:500});
     }
 }
+
+export async function GET() {
+    try{
+        const { userId }=auth();
+        if(!userId){
+            return new NextResponse("Unauthorized",{status:401});
+        }
+        const mood=await db.mood_Tracking.findMany({
+            where:{
+                userId:userId
+            },
+            orderBy: {
+                time: 'desc',
+              },
+        });
+        return NextResponse.json(mood);
+    }
+    catch{
+        console.log("eroor");
+    }
+}

@@ -4,9 +4,9 @@ import { Doughnut } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { useRouter } from "next/navigation"
 Chart.register(...registerables);
-function Mood() {
-  // Get current date
-  const currentDate = new Date();
+import { useState,useEffect } from "react";
+import axios from "axios";
+const currentDate = new Date();
 
   // Format date as "Mon, DD MMM"
   const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -57,7 +57,56 @@ function Mood() {
       },
     ],
   };
+  
+function Mood() {
+  // Get current date
+  
   const router = useRouter();
+  type moodtype = {
+    id:string,
+    mood:string,
+    Note:string,
+    intensity:string,
+    location:string,
+    weather:string,
+    // Other properties...
+  };
+  const [mood, setmood] = useState<moodtype[]>([]);
+
+  useEffect(() => {
+    const fetchmood = async () => {
+      try {
+        const res = await axios.get("/api/mood");
+        setmood(res.data);
+      } catch (error) {
+        console.error("Error fetching journal entries:", error);
+      }
+    };
+
+    fetchmood();
+  }, []);
+  const moodCounts = mood.reduce((acc, entry) => {
+    const lowercaseMood = entry.mood.toLowerCase() as "happy" | "sad" | "excited" | "neutral";
+    acc[lowercaseMood] = (acc[lowercaseMood] || 0) + 1;
+    return acc;
+  }, { happy: 0, sad: 0, excited: 0, neutral: 0 });
+
+  const updatedDoughnutData = {
+    labels: ["Happy", "Sad", "Excited", "Neutral"],
+    datasets: [
+      {
+        data: [
+          moodCounts.happy,
+          moodCounts.sad,
+          moodCounts.excited,
+          moodCounts.neutral,
+        ],
+        backgroundColor: ["#FFD700", "#4169E1", "#008000", "#A9A9A9"],
+        borderColor: "white",
+        borderWidth: 5,
+      },
+    ],
+  };
   return (
     <div className="text-center mt-5 mx-10">
       {/* Existing content */}
@@ -99,7 +148,7 @@ function Mood() {
           <h2 className="text-2xl text-purple-900 font-medium mb-4">
             Mood Summary
           </h2>
-          <Doughnut className="pb-2" data={doughnutData} />
+          <Doughnut className="pb-2" data={updatedDoughnutData} />
         </div>
         <div className="ml-6 bg-white rounded-3xl px-3 py-4 w-3/4">
           <h2 className="text-2xl text-purple-900 font-medium mb-4">
@@ -120,49 +169,39 @@ function Mood() {
       <h2 className="text-2xl flex justify-start text-purple-900 font-medium mt-10">
         Your History
       </h2>
-      <div className="flex justify-between my-5 w-1/3">
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="font-bold text-lg text-gray-800">Terrible</div>
-              <div className="text-xs text-gray-600 ml-1 mt-1">20:10</div>
-            </div>
-            <div className="text-violet-500 text-sm font-medium">Edit</div>
+      <div className="flex flex-wrap mt-3.5">
+  {mood.map((entry) => (
+    <div key={entry.id} className="w-full sm:w-1/2 p-4">
+      <div className="bg-white rounded-lg shadow-md p-4 mb-4">
+        <div className="flex justify-between mb-2">
+          <div>
+            <span className="text-gray-700 text-opacity-70">You felt</span>
+            <span className="font-bold ps-1">{entry.mood}</span>
           </div>
-
-          <div className="flex flex-col mt-3.5">
-            <div className="flex justify-start">
-              <span className="text-gray-700 text-opacity-70">You felt</span>
-              <span className="font-bold ps-1"> Disappointed, Confused</span>
-            </div>
-            <div className="flex justify-start">
-              <span className="text-gray-700 text-opacity-70">Because of</span>
-              <span className="font-bold ps-1"> Work</span>
-            </div>
+          <div className="text-gray-700 text-opacity-70">{entry.weather}</div>
+        </div>
+        <div className="flex justify-start mb-2">
+          <span className="text-gray-700 text-opacity-70">Because of</span>
+          <span className="font-bold ps-1">{entry.location}</span>
+        </div>
+        <div className="text-sm text-gray-700 mb-2">
+          <span className="font-bold">Note:</span> {entry.Note}
+        </div>
+        <div className="flex justify-start text-violet-500 text-sm font-medium mb-2">
+          Read more +
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="font-bold text-lg text-gray-800">
+            Recommendation
           </div>
-
-          <div className="mt-3.5 text-sm text-gray-700">
-            <span className="font-bold">Note:</span> The day didn’t go well in
-            the morning. I tried to make coffee, but it burned out. I missed my
-            bus...
-          </div>
-          <div className="flex justify-start text-violet-500 text-sm font-medium ">
-            Read more +
-          </div>
-
-          <div className="flex justify-between items-center mt-5">
-            <div className="font-bold text-lg text-gray-800">
-              Recommendation
-            </div>
-
-            <div className="text-yellow-500 text-sm font-medium">Tip</div>
-          </div>
-
-          <div className="flex justify-start text-gray-700 text-opacity-70 mt-2">
-            Spend time outdoors, surrounded by greenery and fresh air
-          </div>
+          <div className="text-yellow-500 text-sm font-medium">Tip</div>
         </div>
       </div>
+    </div>
+  ))}
+</div>
+
+
     </div>
   );
 }
