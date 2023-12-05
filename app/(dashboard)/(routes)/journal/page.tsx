@@ -4,7 +4,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import toast from "react-hot-toast";
 import {
@@ -16,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
@@ -29,7 +28,8 @@ const formSchema = z.object({
   }),
 });
 
-const JournalPage = () => {
+
+function JournalPage(){
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,21 +40,33 @@ const JournalPage = () => {
 
   const { isSubmitting, isValid } = form.formState;
   const [expanded, setExpanded] = useState(false);
+  type JournalEntry = {
+    id: string;
+    journal_text: string;
+    time: string;
+    // Other properties...
+  };
+  const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
 
+  useEffect(() => {
+    const fetchJournalEntries = async () => {
+      try {
+        const res = await axios.get("/api/journal");
+        setJournalEntries(res.data);
+      } catch (error) {
+        console.error("Error fetching journal entries:", error);
+      }
+    };
+
+    fetchJournalEntries();
+  }, []);
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-        console.log("in page try");
-        console.log(values);
-        const jsonValues = JSON.stringify(values);
-        console.log(jsonValues);
-        // Make the axios POST request with JSON values
-        const response = await axios.post("/api/journal", jsonValues);
-      console.log("in page try 2");
+        const response = await axios.post("/api/journal", values);
       router.push(`/journal`);
       toast.success("Success");
     } catch {
-        console.log("in page catch");
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
   return (
@@ -99,30 +111,26 @@ const JournalPage = () => {
         <h1 className="text-2xl my-6 font-semibold text-purple-700">
           Your Journal Entries
         </h1>
-        <Card className="mt-3 w-80" onClick={() => setExpanded(!expanded)}>
-          <CardHeader>
-            <CardTitle>16 November 2023</CardTitle>
-            {expanded && (
-              <CardDescription>
-                Today was a beautiful day filled with moments of joy and
-                reflection. The morning sun painted the sky in hues of pink and
-                orange, creating a serene atmosphere. In the afternoon, I spent
-                some quiet time at the park, surrounded by the rustling leaves
-                and the soothing sound of birdsong. Nature has a way of calming
-                the mind, and today, it was a welcome escape. Later, I treated
-                myself to a cup of hot coffee at my favorite cafe. The aroma of
-                freshly brewed coffee and the cozy ambiance made it the perfect
-                spot to unwind and reflect on the day. In the evening, I caught
-                up with a good friend over a video call. It's amazing how
-                technology can bridge the distance and bring people together,
-                even when miles apart. As the day comes to a close, I'm filled
-                with gratitude for the simple joys and meaningful connections
-                that made today special. Looking forward to more moments like
-                these.
-              </CardDescription>
-            )}
-          </CardHeader>
-        </Card>
+        <div className="flex flex-wrap -mx-4">
+          {journalEntries.map((entry) => (
+            <div key={entry.id} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 px-4 mb-4">
+              <Card
+                className="w-full"
+                onClick={() => setExpanded(!expanded)}
+              >
+                <CardHeader>
+                  <CardTitle>{new Date(entry.time).toLocaleDateString()}</CardTitle>
+                  {expanded && (
+                    <CardDescription>
+                      {/* Display the journal text */}
+                      {entry.journal_text}
+                    </CardDescription>
+                  )}
+                </CardHeader>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
