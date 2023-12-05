@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -20,43 +20,63 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 const formSchema = z.object({
-    first_name: z.string().min(0, {
-      message: "Enter your first name",
-    }),
-    last_name: z.string().min(0, {
-        message: "Enter your last name",
-      }),
-    email: z.string().min(0, {
-        message: "Email",
-      }),
-      date_of_birth:  z.coerce.number(),
-      profession:z.string().min(0, {
-        message: "Enter your profession",
-      }),
-      gender:z.string().min(0, {
-        message: "Enter your Gender",
-      }),
-      phone_num:z.string(),
+  first_name: z.string().nullable(),
+  last_name: z.string().nullable(),
+  email: z.string().nullable(),
+  date_of_birth: z.number().nullable(),
+  profession: z.string().nullable(),
+  gender: z.string().nullable(),
+  phone_num: z.string().nullable(),
   });
 
 function Profile() {
     const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
-  });
-
   
+  type Profile = {
+    id: string;
+    first_name:string,
+    last_name:string,
+    email:string,
+    date_of_birth:number,
+    profession:string,
+    gender:string,
+    phone_num:string,
+    // Other properties...
+  };
+  const [profile, setprofile] = useState<Profile[]>([]);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("/api/profile");
+        setprofile(res.data);
+      } catch (error) {
+        console.error("Error fetching journal entries:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: profile ? profile[0] : undefined,
+  });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-        const response = await axios.post("/api/profile", values);
+      const response = await axios.post("/api/profile", values);
       router.push(`/profile`);
       toast.success("Success");
     } catch {
-       
-      toast.error("something went wrong");
+      toast.error("Something went wrong");
     }
   };
+
+  if (!profile || profile.length === 0) {
+    return <div>Loading...</div>; // or display a message indicating no profile data
+  }
+
+  const user = profile[0];
   return( 
   <div className="p-6">
         <h1 className="text-purple-900 text-2xl font-medium my-3">Your Profile</h1>
@@ -74,11 +94,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input
-                       
-                      placeholder="John"
-                      {...field}
-                    />
+                  <Input {...field} placeholder="John" value={field.value || user.first_name} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,11 +107,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input
-                       
-                      placeholder="Doe"
-                      {...field}
-                    />
+                  <Input {...field} value={field.value ||user.last_name} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -108,11 +120,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                       
-                      placeholder="Johndoe@gmail.com"
-                      {...field}
-                    />
+                  <Input {...field} value={field.value ||user.email} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,12 +133,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>Age</FormLabel>
                   <FormControl>
-                  <Input
-                  type="number"
-                       
-                      placeholder="enter your age"
-                      {...field}
-                    />
+                  <Input type="number" {...field} value={field.value ||user.date_of_birth} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -143,11 +146,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>Profession</FormLabel>
                   <FormControl>
-                  <Input
-                       
-                      placeholder="enter your profession"
-                      {...field}
-                    />
+                  <Input {...field} value={field.value ||user.profession} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,11 +159,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>Gender</FormLabel>
                   <FormControl>
-                  <Input
-                       
-                      placeholder="enter your gender"
-                      {...field}
-                    />
+                  <Input {...field} value={field.value ||user.gender} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -177,11 +172,7 @@ function Profile() {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                  <Input
-                       
-                      placeholder="enter your Phone"
-                      {...field}
-                    />
+                  <Input {...field} value={field.value ||user.phone_num} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

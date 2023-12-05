@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { json } from "stream/consumers";
 
 const formSchema = z.object({
   journal_text: z.string().min(1, {
