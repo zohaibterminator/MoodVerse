@@ -7,6 +7,7 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { auth } from "@clerk/nextjs";
 import {
     Form,
     FormControl,
@@ -71,7 +72,6 @@ function Profile() {
       toast.error("Something went wrong");
     }
   };
-
   if (!profile || profile.length === 0) {
     return <div>Loading...</div>; // or display a message indicating no profile data
   }

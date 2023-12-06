@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, BookOpenText, SmilePlus,Lightbulb,User ,Activity} from "lucide-react";
+import { LayoutDashboard, BookOpenText, SmilePlus,Lightbulb,User ,Activity,Star} from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const dancing_script = Dancing_Script({
@@ -49,7 +49,12 @@ const routes =[
         href: "/recommendation",
         color : "text-lime-600",
     },
-    
+    {
+      label: "Rating",
+      icon: Star,
+      href: "/ratings",
+      color : "text-orange-600",
+  },
 ];
 
 const Sidebar = () => {

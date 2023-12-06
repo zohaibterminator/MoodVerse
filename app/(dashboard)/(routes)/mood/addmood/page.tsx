@@ -41,6 +41,8 @@ function Profile() {
     try {
       const response = await axios.post("/api/mood", values);
       router.push(`/mood`);
+      const analysis = await axios.post("/api/analysis/mood", values);
+      const postrecommned = await axios.post("/api/recommendation");
       toast.success("Success");
     } catch {
       toast.error("something went wrong");

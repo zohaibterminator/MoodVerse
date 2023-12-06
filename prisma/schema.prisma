@@ -51,13 +51,16 @@ model Mood_Tracking {
 
 model AI_Sentiment_Analysis {
   id             String          @id @default(uuid())
-  entry_id       String          @unique
-  mood_id        String          @unique
+  entry_id       String?
+  mood_id        String?
   analysis       String
   time           DateTime        @default(now())
-  entry          Journal_Entries @relation(fields: [entry_id], references: [id])
-  mood           Mood_Tracking   @relation(fields: [mood_id], references: [id])
+  entry          Journal_Entries? @relation(fields: [entry_id], references: [id]) 
+  mood           Mood_Tracking?   @relation(fields: [mood_id], references: [id])
   recommendation Recommendation?
+
+  @@unique([entry_id])
+  @@unique([mood_id])
 }
 
 model Recommendation {

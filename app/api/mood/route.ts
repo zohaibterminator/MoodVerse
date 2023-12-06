@@ -43,6 +43,13 @@ export async function GET() {
             orderBy: {
                 time: 'desc',
               },
+              include: {
+                analysis: {
+                  include: {
+                    recommendation: true,
+                  },
+                },
+              },
         });
         return NextResponse.json(mood);
     }
