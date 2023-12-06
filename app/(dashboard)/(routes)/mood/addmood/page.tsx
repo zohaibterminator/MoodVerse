@@ -23,10 +23,10 @@ const formSchema = z.object({
   mood: z.string().min(0, {
     message: "Enter your mood",
   }),
-  Note: z.string(),
-  intensity: z.coerce.number(),
-  location: z.string(),
-  weather: z.string(),
+  Note: z.string().optional(),
+  intensity: z.coerce.number().min(1),
+  location: z.string().optional(),
+  weather: z.string().optional(),
 });
 
 function Profile() {
