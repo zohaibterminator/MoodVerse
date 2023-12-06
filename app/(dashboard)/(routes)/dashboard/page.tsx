@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight, BookOpenText, SmilePlus, Lightbulb,User,Activity} from 'lucide-react';
+import { ArrowRight, BookOpenText, SmilePlus, Lightbulb,User,Activity,Star} from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,12 @@ const tools = [
     color: "text-lime-500",
     //bgColor : "bg-red-500/10",
   },
+  {
+    label: "Rating",
+    icon: Star,
+    href: "/ratings",
+    color : "text-orange-600",
+},
 ];
 
 const DashboardPage = () => {

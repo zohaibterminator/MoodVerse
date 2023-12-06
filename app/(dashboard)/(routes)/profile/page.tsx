@@ -7,7 +7,6 @@ import * as z from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { auth } from "@clerk/nextjs";
 import {
     Form,
     FormControl,
@@ -18,16 +17,15 @@ import {
     FormMessage,
   } from "@/components/ui/form";
   import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 
-const formSchema = z.object({
-  first_name: z.string().nullable(),
-  last_name: z.string().nullable(),
-  email: z.string().nullable(),
-  date_of_birth: z.number().nullable(),
-  profession: z.string().nullable(),
-  gender: z.string().nullable(),
-  phone_num: z.string().nullable(),
+  const formSchema = z.object({
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
+    email: z.string().optional(),
+    date_of_birth: z.number().optional(),
+    profession: z.string().optional(),
+    gender: z.string().optional(),
+    phone_num: z.string().optional(),
   });
 
 function Profile() {
