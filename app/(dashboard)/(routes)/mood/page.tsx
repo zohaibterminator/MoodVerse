@@ -52,7 +52,8 @@ function Mood() {
   };
   const [mood, setmood] = useState<moodtype[]>([]);
   const [expandedRecommendationId, setExpandedRecommendationId] = useState<string | null>(null);
-
+  const currentDate = new Date();
+  const [selectedDate, setSelectedDate] = useState<number>(currentDate.getDate());
   useEffect(() => {
     const fetchmood = async () => {
       try {
@@ -105,6 +106,25 @@ function Mood() {
       },
     ],
   };
+  const handleDelete = async (entryId: string) => {
+    try {
+      // Make a request to delete the mood entry
+      await axios.delete(`/api/mood/${entryId}`);
+      // Refetch mood entries to update the UI
+      const res = await axios.get("/api/mood");
+      setmood(res.data);
+    } catch (error) {
+      console.error("Error deleting mood entry:", error);
+    }
+  };
+  const handleDateClick = (day: number) => {
+    setSelectedDate(day);
+  };
+
+  const filteredMood = mood.filter(entry => {
+    const entryDay = new Date(entry.time).getDate();
+    return entryDay === selectedDate;
+  });
   return (
     <div className="text-center mt-5 mx-10">
       {/* Existing content */}
@@ -158,14 +178,17 @@ function Mood() {
             Calendar
           </h2>
           <div className="grid grid-cols-7 gap-2">
-            {daysOfMonth.map((day) => (
-              <div
-                key={day}
-                className="text-center py-2 bg-gray-100 rounded-full"
-              >
-                {day}
-              </div>
-            ))}
+          {daysOfMonth.map((day) => (
+            <div
+              key={day}
+              className={`text-center py-2 bg-gray-100 rounded-full cursor-pointer ${
+                day === selectedDate ? 'bg-purple-900 text-white' : ''
+              }`}
+              onClick={() => handleDateClick(day)}
+            >
+              {day}
+            </div>
+          ))}
           </div>
         </div>
       </div>
@@ -173,7 +196,7 @@ function Mood() {
         Your History
       </h2>
       <div className="flex flex-wrap mt-3.5">
-      {mood.map((entry) => (
+      {filteredMood.map((entry) => (
           <div key={entry.id} className="w-full sm:w-1/2 p-4">
             <div className="bg-white rounded-lg shadow-md p-4 mb-4">
               <div className="flex justify-between mb-2">
@@ -205,9 +228,9 @@ function Mood() {
               <div className="flex justify-start text-violet-500 text-sm font-medium mb-2">
                 <span
                   className="cursor-pointer underline"
-                  onClick={() => router.push(`/mood/addmood`)}
+                  onClick={() => handleDelete(entry.id)}
                 >
-                  Edit
+                  Delete
                 </span>
               </div>
               <div className="flex justify-between items-center cursor-pointer" onClick={() => setExpandedRecommendationId(entry.id)}>
