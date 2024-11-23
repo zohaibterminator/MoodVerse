@@ -1,11 +1,8 @@
-// D:\FAST\db-project\MoodVerse\app\api\mood\[id]\route.ts
-
-import { NextApiRequest, NextApiResponse } from 'next';
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
     const { userId } = auth();
 
@@ -14,14 +11,14 @@ export async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { id } = req.query;
+    const { id } = params; // Fetch the ID from the route parameters
 
     console.log("Deleting mood entry:", id);
 
     // Check if the mood entry exists and belongs to the user
     const moodEntry = await db.mood_Tracking.findUnique({
       where: {
-        id: id?.toString(),
+        id,
       },
       include: {
         analysis: {
@@ -57,25 +54,15 @@ export async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
     // Delete the mood entry
     await db.mood_Tracking.delete({
       where: {
-        id: id?.toString(),
+        id,
       },
     });
 
     console.log("Mood entry deleted successfully");
 
-    res.status(204).end(); // 204 No Content indicates successful deletion
+    return new NextResponse(null, { status: 204 }); // 204 No Content indicates successful deletion
   } catch (error) {
     console.error("[Mood] Error deleting mood entry:", error);
     return new NextResponse("Internal Error", { status: 500 });
-  }
-}
-
-export { handleDelete as DELETE }; // Export handleDelete as DELETE
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'DELETE') {
-    await handleDelete(req, res);
-  } else {
-    res.status(405).end(); // Method Not Allowed
   }
 }
