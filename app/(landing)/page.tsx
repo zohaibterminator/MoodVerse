@@ -49,9 +49,9 @@ function LandingPage() {
                   </span>
                 </div>
                 <div className="justify-center text-purple-700 text-2xl font-medium leading-10 tracking-tight mt-8 max-md:max-w-full">
-                  MoodVerse is more than just a journal; it's your companion on
+                  MoodVerse is more than just a journal; it&apos;s your companion on
                   the journey to understanding and embracing your emotions.
-                  Whether you're capturing the highs of joy or navigating the
+                  Whether you&apos;re capturing the highs of joy or navigating the
                   depths of introspection, MoodVerse empowers you to express,
                   reflect, and connect with your inner self.
                 </div>
