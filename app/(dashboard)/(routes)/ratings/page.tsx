@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 
-function rating() {
+function Rating() {
     type ratingtype = {
       id: string;
       rating: number;
@@ -67,4 +67,4 @@ function rating() {
 
 }
 
-export default rating;
+export default Rating;
