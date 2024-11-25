@@ -60,7 +60,7 @@ function LandingPage() {
                     <div>
                       <Link href="/sign-in">
                         <div className="justify-center text-white text-center text-3xl font-semibold leading-10 tracking-tight bg-purple-700 items-center px-5 py-8 rounded-[100px]">
-                          SIGN UP
+                          LOG IN
                         </div>
                       </Link>
                     </div>
@@ -69,7 +69,7 @@ function LandingPage() {
                     <div>
                       <Link href="/sign-up">
                         <div className="justify-center text-purple-700 text-center text-3xl font-semibold leading-10 tracking-tight bg-purple-700 bg-opacity-0 items-center px-5 py-8 rounded-[100px] border-4 border-solid border-purple-700">
-                          LOG IN
+                          SIGN UP
                         </div>
                       </Link>
                     </div>

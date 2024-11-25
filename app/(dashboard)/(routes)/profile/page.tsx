@@ -29,7 +29,7 @@ import {
   });
 
 function Profile() {
-    const router = useRouter();
+  const router = useRouter();
   
   type Profile = {
     id: string;
@@ -50,7 +50,8 @@ function Profile() {
         const res = await axios.get("/api/profile");
         setprofile(res.data);
       } catch (error) {
-        console.error("Error fetching journal entries:", error);
+        toast.error("Failed to load profile data");
+        console.error("Error fetching profile data:", error);
       }
     };
 
@@ -64,6 +65,9 @@ function Profile() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post("/api/profile", values);
+
+      console.log("Response from pushing profile to db: ", response)
+
       router.push(`/profile`);
       toast.success("Success");
     } catch {

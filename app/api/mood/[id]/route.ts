@@ -1,10 +1,10 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { userId } = auth();
+    const { userId }=await auth();
 
     if (!userId) {
       console.log("Unauthorized");

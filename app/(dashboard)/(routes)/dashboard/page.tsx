@@ -1,53 +1,84 @@
 "use client";
-import { ArrowRight, BookOpenText, SmilePlus, Lightbulb,User,Activity,Star} from 'lucide-react';
+import { useEffect } from "react";
+import { ArrowRight, BookOpenText, SmilePlus, Lightbulb, User, Activity, Star } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs"; // Use the useUser hook
+import axios from "axios"; // For making API requests
+
 const tools = [
   {
     label: "Profile",
     icon: User,
     href: "/profile",
     color: "text-red-500",
-    //bgColor : "bg-red-500/10",
   },
   {
     label: "Journal",
     icon: BookOpenText,
     href: "/journal",
     color: "text-green-600",
-    //bgColor: "bg-green-600/10"
   },
   {
     label: "Mood",
     icon: SmilePlus,
     href: "/mood",
     color: "text-pink-500",
-    //bgColor : "bg-pink-500/10",
   },
   {
     label: "Analysis",
     icon: Activity,
     href: "/analysis",
-    color : "text-cyan-500",
-},
+    color: "text-cyan-500",
+  },
   {
     label: "Recommendation",
     icon: Lightbulb,
     href: "/recommendation",
     color: "text-lime-500",
-    //bgColor : "bg-red-500/10",
   },
   {
     label: "Rating",
     icon: Star,
     href: "/ratings",
-    color : "text-orange-600",
-},
+    color: "text-orange-600",
+  },
 ];
 
 const DashboardPage = () => {
   const router = useRouter();
+  const { user, isLoaded, isSignedIn } = useUser(); // Access user details from useUser hook
+
+  useEffect(() => {
+    // Check if user is signed in and details are loaded
+    const syncUserToDatabase = async () => {
+      if (isSignedIn && user) {
+        try {
+          // Get the user details
+          const userDetails = {
+            id: user.id, // Use the user ID
+            first_name: user.firstName,
+            last_name: user.lastName,
+            email: user.primaryEmailAddress?.emailAddress || "", // Ensure email is available
+          };
+
+          // Send POST request to the backend to sync user data
+          await axios.post("/api/register", userDetails);
+
+          console.log("User details synced to the database.");
+        } catch (error) {
+          console.error("Error syncing user details:", error);
+        }
+      }
+    };
+
+    // Sync user details when the component is mounted and user is signed in
+    if (isLoaded && isSignedIn) {
+      syncUserToDatabase();
+    }
+  }, [isLoaded, isSignedIn, user]); // Re-run this effect when user details are available
+
   return (
     <div className="mb-8 space-y-4 text-center">
       <h2 className="text-2xl font-semibold text-purple-700">
