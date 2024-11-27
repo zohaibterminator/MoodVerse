@@ -1,17 +1,24 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest) {
   try {
-    const { userId }=await auth();
+    const { userId } = await auth();
 
     if (!userId) {
       console.log("Unauthorized");
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { id } = params; // Fetch the ID from the route parameters
+    // Get the `id` from the dynamic route parameters
+    const id = req.nextUrl.pathname.split("/").pop();
+
+    if (!id) {
+      console.log("Invalid ID");
+      return new NextResponse("Bad Request", { status: 400 });
+    }
 
     console.log("Deleting mood entry:", id);
 
