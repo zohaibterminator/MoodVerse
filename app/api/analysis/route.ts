@@ -1,11 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from "@/lib/db";
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY // This is also the default, can be omitted
-});
+const googleai = new GoogleGenerativeAI(
+    process.env.GEMINI_API_KEY! // This is also the default, can be omitted
+);
 
 export async function POST(
     req: Request
@@ -15,20 +15,19 @@ export async function POST(
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
-        if (!openai.apiKey) {
-            return new NextResponse("OpenAI API Key not configured.", { status: 500 });
+        if (!process.env.GEMINI_API_KEY) {
+          return new NextResponse("Google AI API Key not configured.", { status: 500 });
         }
         const journal_text = (await req.json()).journal_text;
         const system_msg = "You are have to act as a therapist and only analyse, journal Entry provided by user";
-        const res = await openai.chat.completions.create({
-            messages: [
-              { role: "system", content: system_msg },
-              { role: "user", content: journal_text }
-            ],
-            model: "gpt-3.5-turbo",
-          });
-        const content = res.choices[0].message.content;
-        
+        const model = googleai.getGenerativeModel({
+          model:"gemini-1.5-flash",
+          systemInstruction:system_msg,
+        })
+        const res = await model.generateContent([journal_text]);
+        console.log("check4");
+        const content = res.response.text();
+
         const latestJournalEntry = await db.journal_Entries.findFirst({
             where: {
                 userId: userId, // replace with the actual user ID
