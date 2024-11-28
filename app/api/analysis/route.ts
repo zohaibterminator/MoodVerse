@@ -11,7 +11,8 @@ export async function POST(
     req: Request
 ) {
     try {
-      const { userId }=await auth();
+        const { userId }=await auth();
+        console.log(userId);
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
@@ -46,7 +47,6 @@ export async function POST(
             }
         });
 
-        
         return NextResponse.json(analysis);
     } catch (error) {
         console.log('[analysis]', error);

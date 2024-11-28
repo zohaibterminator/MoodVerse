@@ -16,8 +16,8 @@ export async function POST (
 
         const Journal_Entries = await db.journal_Entries.create({
             data:{
-                userId,
-                journal_text
+                userId: userId,
+                journal_text: journal_text
             }
         });
         return NextResponse.json(Journal_Entries);
