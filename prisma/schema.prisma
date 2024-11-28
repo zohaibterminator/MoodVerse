@@ -53,7 +53,7 @@ model AI_Sentiment_Analysis {
   id             String          @id @default(uuid())
   entry_id       String?
   mood_id        String?
-  analysis       String
+  analysis       String          @db.Text
   time           DateTime        @default(now())
   entry          Journal_Entries? @relation(fields: [entry_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   mood           Mood_Tracking?   @relation(fields: [mood_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -66,7 +66,7 @@ model AI_Sentiment_Analysis {
 model Recommendation {
   id              String                @id @default(uuid())
   analysis_id     String                @unique
-  recommendations String
+  recommendations String                @db.Text
   time            DateTime              @default(now())
   rating          Rating?
   analysis        AI_Sentiment_Analysis @relation(fields: [analysis_id], references: [id])
