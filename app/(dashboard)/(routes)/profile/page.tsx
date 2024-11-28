@@ -22,11 +22,14 @@ import {
     first_name: z.string().optional(),
     last_name: z.string().optional(),
     email: z.string().optional(),
-    date_of_birth: z.number().optional(),
+    date_of_birth: z
+      .string() // Accept as string from input
+      .transform((val) => (val ? Number(val) : undefined)) // Transform to number
+      .optional(),
     profession: z.string().optional(),
     gender: z.string().optional(),
     phone_num: z.string().optional(),
-  });
+  });  
 
 function Profile() {
   const router = useRouter();
