@@ -18,11 +18,12 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const formSchema = z.object({
   journal_text: z.string().min(1, {
-    message: "Journal journal_text is required",
+    message: "Journal text is required",
   }),
 });
 
@@ -57,17 +58,34 @@ function JournalPage() {
     fetchJournalEntries();
   }, []);
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("Values ", values);
     try {
       const response = await axios.post("/api/journal", values);
       setJournalEntries((prevEntries) => [response.data, ...prevEntries]);
-      const analysis = await axios.post("/api/analysis", values);
-      const postrecommned = await axios.post("/api/recommendation");
+      try {
+        const analysis = await axios.post("/api/analysis", values);
+        console.log("Analysis result:", analysis.data);
+      } catch (analysisError) {
+        console.error("Analysis error:", analysisError);
+      }
+      try {
+        const postRecommend = await axios.post("/api/recommendation");
+        console.log("Recommendation result:", postRecommend.data);
+      } catch (recommendError) {
+        console.error("Recommendation error:", recommendError);
+      }
       router.push(`/journal`);
       toast.success("Success");
-    } catch {
+    } catch (e) {
+      if (axios.isAxiosError(e)) {
+        console.error("Axios error:", e.response?.data || e.message);
+      } else {
+        console.error("Unexpected error:", e);
+      }
       toast.error("Something went wrong");
     }
   };
+  
   return (
     <div className="mx-auto p-6  rounded-md shadow-md">
   <div className="w-full">

@@ -17,8 +17,8 @@ const DashboardLayout =({
                 <Navbar />
                 {children}
             </main>
-        </div>
-    );
+        </div>
+    );
 }
 
 export default DashboardLayout;
