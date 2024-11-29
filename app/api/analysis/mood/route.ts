@@ -22,7 +22,7 @@ export async function POST(
         console.log("check2");
         const {mood,Note,intensity,location,weather} = await req.json();
         console.log("check3");
-        const system_msg = "You are have to act as a therapist and only analyse, mood details provided by user";
+        const system_msg = "You are have to act as a therapist and only analyze mood details provided by user. Your response should be in the form of a paragraph.";
         const usermsg = "Mood: " + mood+ " Note with mood: " + Note +" intensity: "+intensity+" location: "+location+" weather: "+weather;
 
         const model = googleai.getGenerativeModel({
@@ -50,6 +50,9 @@ export async function POST(
                 analysis: content !== null ? content : "Default value or handle null case",
             }
         });
+
+        console.log(analysis);
+
         return NextResponse.json(analysis);
     } catch (error) {
         console.log('[analysis]', error);

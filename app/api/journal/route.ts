@@ -6,7 +6,6 @@ export async function POST (
     req:Request,
 ){
     try{
-        
         const { userId }=await auth();
         const { journal_text } = await req.json();
 
@@ -16,16 +15,14 @@ export async function POST (
 
         const Journal_Entries = await db.journal_Entries.create({
             data:{
-                userId: userId,
-                journal_text: journal_text
+                userId,
+                journal_text
             }
         });
         return NextResponse.json(Journal_Entries);
     }
     catch (error){
-        const { userId }=await auth();
-        console.log(userId);
-        //console.log("[JOURNAL]",error);
+        console.log("[JOURNAL]",error);
         return new NextResponse("Internal Error", {status:500});
     }
 }

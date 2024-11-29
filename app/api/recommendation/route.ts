@@ -38,7 +38,7 @@ export async function POST(
             },
         });
         const analysis_text = latestanalysis?.analysis ?? "";
-        const system_msg = "You have to act as a therapist and only recommend stuff to make user feel better, according to analysis done by you";
+        const system_msg = "You have to act as a therapist and only recommend stuff to make user feel better, according to analysis done by you. Your response should be in the form of a paragraph.";
         const model = googleai.getGenerativeModel({
           model:"gemini-1.5-flash",
           systemInstruction:system_msg,
