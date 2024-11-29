@@ -25,11 +25,11 @@ model User_Profile {
 
 model Journal_Entries {
   id           String                 @id @default(uuid())
-  userId      String
+  userId       String
   time         DateTime               @default(now())
   journal_text String                 @db.Text
   user         User_Profile           @relation(fields: [userId], references: [id])
-  analysis     AI_Sentiment_Analysis?
+  analysis     AI_Sentiment_Analysis[] // Change to an array to support one-to-many
 
   @@index([userId])
 }
@@ -51,7 +51,7 @@ model Mood_Tracking {
 
 model AI_Sentiment_Analysis {
   id             String          @id @default(uuid())
-  entry_id       String?
+  entry_id       String?         
   mood_id        String?
   analysis       String          @db.Text
   time           DateTime        @default(now())
@@ -59,8 +59,7 @@ model AI_Sentiment_Analysis {
   mood           Mood_Tracking?   @relation(fields: [mood_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   recommendation Recommendation?
 
-  @@unique([entry_id])
-  @@unique([mood_id])
+  @@unique([mood_id]) // Keep this unique constraint for mood_id only
 }
 
 model Recommendation {
