@@ -64,7 +64,7 @@ const Sidebar = () => {
       <div className="px-3 py-2 flex-1">
         <Link href="/dashboard" className="flex items-center pl-3 mb-14">
           <div className="relative w-10 h-10 mr-4">
-            <Image fill alt="Logo" src="/loho2.jpg" />
+            <Image fill alt="Logo" src="https://moodverse.blob.core.windows.net/moodverse-data/loho2.jpg?sp=r&st=2024-11-29T14:59:48Z&se=2024-11-30T13:59:48Z&sv=2022-11-02&sr=b&sig=D5PIHDIOyWIBsKdc%2FAZropy3VhUg7IcWdAZeJnvoQv0%3D" />
           </div>
           <h1 className={cn("text-3xl font-bold", dancing_script.className)}>
             MoodVerse
