@@ -83,7 +83,7 @@ function LandingPage() {
               
               <Image
                 loading="lazy"
-                src="/landing3.webp"
+                src="https://moodverse.blob.core.windows.net/moodverse-data/landing3.webp?sp=r&st=2024-11-29T14:52:08Z&se=2024-11-30T13:52:08Z&sv=2022-11-02&sr=b&sig=b9FdBAXmYxjsjxUu8s34wIvR6UJhwYLzsGP7Zt9Nzhg%3D"
                 alt="Image Description"
                 className="aspect-[1.06] object-contain object-center  overflow-hidden mt-10 max-md:mt-10"
                 width={400}
